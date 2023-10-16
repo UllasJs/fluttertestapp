@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app/core/constants.dart';
 import 'package:test_app/core/notifier.dart';
 
@@ -10,8 +11,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Map<String, Object> data = {};
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,9 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          isDarkNotifier.value = !isDarkNotifier.value;
-        },
+        onPressed: toggleDarkMode,
         child: ValueListenableBuilder(
           valueListenable: isDarkNotifier,
           builder: (context, isDark, child) {
@@ -55,5 +52,17 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  void toggleDarkMode() {
+    isDarkNotifier.value = !isDarkNotifier.value;
+
+    // Save the dark mode state to SharedPreferences
+    saveDarkModeState(isDarkNotifier.value);
+  }
+
+  void saveDarkModeState(bool isDarkMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDark', isDarkMode);
   }
 }

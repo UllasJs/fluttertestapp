@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app/core/notifier.dart';
 import 'package:test_app/widget_tree.dart';
 
-void main() async {
-  runApp(const MyApp());
+void main() {
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatefulWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -15,6 +17,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+
+    isDarkMode();
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -32,5 +41,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         );
       },
     );
+  }
+
+  void isDarkMode() async {
+    var isDarkPref = await SharedPreferences.getInstance();
+    isDarkNotifier.value = isDarkPref.getBool('isDark') ?? false;
   }
 }

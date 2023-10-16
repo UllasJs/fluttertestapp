@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app/class/item_class.dart';
 import 'package:test_app/core/constants.dart';
 
@@ -15,6 +16,18 @@ class _DescriptionPageState extends State<DescriptionPage> {
   double fontsizeCustom = 25.0;
 
   @override
+  void initState() {
+    super.initState();
+
+    loadFontSize();
+  }
+
+  Future<void> saveFontSize(double fontSize) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('fontSizeCustom', fontSize);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +42,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
-            color: Colors.lightBlue,
           ),
         ),
         centerTitle: true,
@@ -47,7 +59,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 },
                 icon: const Icon(
                   Icons.info,
-                  color: Colors.lightBlue,
                 )),
           )
         ],
@@ -65,6 +76,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     onPressed: () {
                       setState(() {
                         fontsizeCustom = 25;
+                        saveFontSize(fontsizeCustom);
                       });
                     },
                     child: const Text('Small Title'),
@@ -73,6 +85,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     onPressed: () {
                       setState(() {
                         fontsizeCustom = 50;
+                        saveFontSize(fontsizeCustom);
                       });
                     },
                     child: const Text('Medium Title'),
@@ -81,6 +94,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     onPressed: () {
                       setState(() {
                         fontsizeCustom = 80;
+                        saveFontSize(fontsizeCustom);
                       });
                     },
                     child: const Text('Large Title'),
@@ -89,6 +103,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     onPressed: () {
                       setState(() {
                         fontsizeCustom = 200;
+                        saveFontSize(fontsizeCustom);
                       });
                     },
                     child: const Text('Huge Title'),
@@ -120,5 +135,15 @@ class _DescriptionPageState extends State<DescriptionPage> {
         ),
       ),
     );
+  }
+
+  Future<void> loadFontSize() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedFontSize = prefs.getDouble('fontSizeCustom'); // Default to 25.0 if no value is found
+    if (savedFontSize != null) {
+      setState(() {
+        fontsizeCustom = savedFontSize;
+      });
+    }
   }
 }

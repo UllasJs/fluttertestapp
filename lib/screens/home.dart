@@ -11,14 +11,13 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         leading: const Icon(
           Icons.music_note,
-          color: Colors.black,
         ),
-        title: const Text('Music'),
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 24,
-          fontFamily: 'Poppins, san-serif',
-          fontWeight: FontWeight.bold,
+        title: const Text(
+          'Music',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         // backgroundColor: Colors.pink,
         elevation: 0.0,
@@ -26,7 +25,6 @@ class HomePage extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.search),
-            color: Colors.black,
             iconSize: 24,
             padding: const EdgeInsets.only(right: 15),
           ),
